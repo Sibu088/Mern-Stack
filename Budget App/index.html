@@ -1,0 +1,138 @@
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Budget App</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="style.css" />
+    <h1>Welcome to Sibu Budget App</h1>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="container">
+        <div class="sub-container">
+          <!-- Budget -->
+          <div class="total-amount-container">
+            <h3>Budget</h3>
+            <p class="hide error" id="budget-error">
+              Value cannot be empty or negative
+            </p>
+            <input
+              type="number"
+              id="total-amount"
+              placeholder="Enter Total Amount"
+            />
+            <button class="submit" id="total-amount-button">Set Budget</button>
+          </div>
+
+          <!-- Expenditure -->
+          <div class="user-amount-container">
+            <h3>Expenses</h3>
+            <p class="hide error" id="product-title-error">
+              Values cannot be empty
+            </p>
+            <input
+              type="text"
+              class="product-title"
+              id="product-title"
+              placeholder="Enter Title of Product"
+            />
+            <input
+              type="number"
+              id="user-amount"
+              placeholder="Enter Cost of Product"
+            />
+            <button class="submit" id="check-amount">Add Expense</button>
+          </div>
+        </div>
+        <!-- Output -->
+        <div class="output-container flex-space">
+          <div>
+            <p>Total Budget</p>
+            <span id="amount">0</span> <span class="rand-sign"></span>
+          </div>
+          <div>
+            <p>Expenses</p>
+            <span id="expenditure-value">0</span> <span class="rand-sign"></span>
+          </div>
+          <div>
+            <p>Total Expenses</p>
+            <span id="total-expenses">0</span> <span class="rand-sign"></span>
+          </div>
+          <div>
+            <p>Balance</p>
+            <span id="balance-amount">0</span> <span class="rand-sign"></span>
+          </div>
+        </div>
+      </div>
+      <!-- List -->
+      <div class="list">
+        <h3>Expense List</h3>
+        <div class="list-container" id="list"></div>
+      </div>
+    </div>
+    <!-- Script -->
+    <script src="main.js"></script>
+    <script>
+      // Function to add the "rand" sign
+      function addRandSign() {
+        const randSigns = document.querySelectorAll(".rand-sign");
+        randSigns.forEach((sign) => {
+          sign.textContent = "R";
+        });
+      }
+
+      // Function to calculate the total expenses
+      function calculateTotalExpenses() {
+        const expenseList = document.getElementById("list");
+        let totalExpenses = 0;
+        expenseList.innerHTML.forEach((child) => {
+          if (child.textContent.startsWith("R")) {
+            totalExpenses += parseFloat(child.textContent.split("R")[0]);
+          }
+        });
+        document.getElementById("total-expenses").textContent = totalExpenses.toFixed(2);
+      }
+
+      // Function to update the balance when the total budget changes
+      function updateBalance() {
+        const totalBudget = document.getElementById("amount").textContent;
+        const totalExpenses = document.getElementById("total-expenses").textContent;
+        const balance = parseFloat(totalBudget) - parseFloat(totalExpenses);
+        document.getElementById("balance-amount").textContent = balance.toFixed(2);
+      }
+
+      // Update the balance and calculate the total expenses when the "Add Expense" button is clicked
+      document.getElementById("check-amount").addEventListener("click", function () {
+        addRandSign();
+        calculateTotalExpenses();
+        updateBalance();
+      });
+
+      // Update the total expenses when the list is updated
+      document.getElementById("list").addEventListener("DOMSubtreeModified", function () {
+        calculateTotalExpenses();
+        updateBalance();
+      });
+
+      // Call the functions when the page loads
+      window.onload = function () {
+        const totalBudget = document.getElementById("amount");
+        if (!totalBudget.textContent.includes("R")) {
+          totalBudget.textContent += "R";
+        }
+        calculateTotalExpenses();
+        updateBalance();
+      };
+    </script>
+  </body>
+</html>
