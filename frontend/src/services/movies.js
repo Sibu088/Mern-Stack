@@ -2,10 +2,10 @@ import axios from "axios";
 
 class MovieDataService {
     getAll(page = 0) {
-        return axios.get(`https://mern-stack-backend-i8nv.onrender.com?page=${page}`)
+        return axios.get(`https://mern-stack-backend-fciq.onrender.com/api/v1/movies?page=${page}`)
     }
     get(id) {
-        return axios.get(`https://mern-stack-backend-i8nv.onrender.com/id/${id}`)
+        return axios.get(`https://mern-stack-backend-fciq.onrender.com/api/v1/movies/id/${id}`)
     }
     // find(title) {
     //     return axios.get(
@@ -13,24 +13,24 @@ class MovieDataService {
     //     )
     // }
     find(query, by = "title", page = 0, rating) {
-        return axios.get(
-            `https://mern-stack-backend-i8nv.onrender.com?${by}=${query}&page=${page}&rating=${rating}`
+        return axios.get(https://mern-stack-backend-fciq.onrender.com/api/v1/movies
+            `https://mern-stack-backend-fciq.onrender.com/api/v1/movies?${by}=${query}&page=${page}&rating=${rating}`
         )
     }
     createReview(data) {
-        return axios.post("https://mern-stack-backend-i8nv.onrender.com/review", data)
+        return axios.post("https://mern-stack-backend-fciq.onrender.com/api/v1/movies/review", data)
     }
     updateReview(data) {
-        return axios.put("https://mern-stack-backend-i8nv.onrender.com/review", data)
+        return axios.put("https://mern-stack-backend-fciq.onrender.com/api/v1/movies/review", data)
     }
     deleteReview(id, userId) {
         return axios.delete(
-            "https://mern-stack-backend-i8nv.onrender.com/review",
+            "https://mern-stack-backend-fciq.onrender.com/api/v1/movies/review",
             { data: { review_id: id, user_id: userId } }
         )
     }
     getRatings() {
-        return axios.get("https://mern-stack-backend-i8nv.onrender.com/ratings")
+        return axios.get("https://mern-stack-backend-fciq.onrender.com/api/v1/movies/ratings")
     }
 }
 
