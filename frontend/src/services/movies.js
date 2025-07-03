@@ -12,8 +12,8 @@ class MovieDataService {
     //         `http://localhost:5000/api/v1/movies?title=${title}`
     //     )
     // }
-    find(query, by = "title", page = 0, rating) {
-        return axios.get(https://mern-stack-backend-fciq.onrender.com/api/v1/movies
+   find(query, by = "title", page = 0, rating) {
+        return axios.get(
             `https://mern-stack-backend-fciq.onrender.com/api/v1/movies?${by}=${query}&page=${page}&rating=${rating}`
         )
     }
