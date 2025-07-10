@@ -9,15 +9,28 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/Container';
 
 
+
+
 const MoviesList = props => {
 
    const [movies, setMovies] = useState([])
    const [searchTitle, setSearchTitle] = useState("")
    const [searchRating, setSearchRating] = useState("")
    const [ratings, setRatings] = useState(["All Ratings"])
+
+
+const [page, boook] = useState("");
+   useEffect(() => {
+  console.log("Search Title:", searchTitle);
+  console.log("Search Rating:", searchRating);
+}, [page]);
+
+  
+  
+  
    //ch 23
-   const [currentPage, setCurrentPage] = useState(0);//keep track of current page shown
-   const [entriesPerPage, setEntriesPerPage] = useState(0); //particular page
+   // const [currentPage, setCurrentPage] = useState(0);//keep track of current page shown
+   // const [entriesPerPage, setEntriesPerPage] = useState(0); //particular page
    //ch 24
    const [currentSearchMode, setCurrentSearchMode] = useState("");//can findByTitle or by Rating
 
@@ -26,8 +39,14 @@ const MoviesList = props => {
       //page is changed and can be filtered according title etc.
       // eslint-disable-next-line 
    }, [currentSearchMode])
-   //ch 23
+  const [currentPage, setCurrentPage] = useState(0);
+  const [entriesPerPage, setEntriesPerPage] = useState(0);
 
+  const totalMovies = 600; // total movies available
+   // movies per page
+
+  const moviesShown = currentPage * entriesPerPage;
+  const moviesLeft = totalMovies - moviesShown;
    //retrieve next page is rendered once only
    useEffect(() => {
       // retrieveMovies()
@@ -109,11 +128,15 @@ const MoviesList = props => {
    const findByTitle = () => {
       //ch 24
       setCurrentSearchMode("findByTitle")
+      boook(searchTitle)
+
+
       find(searchTitle, "title")// Pass the searchTitle and currentPage to the API call
    }
    const findByRating = () => {
       //ch 24
       setCurrentSearchMode("findByRating")
+      boook(searchRating)
       if (searchRating === "All Ratings") {
          retrieveMovies()
       }
@@ -121,6 +144,14 @@ const MoviesList = props => {
          find(searchRating, "rated")
       }
    }
+   // ✅ CLEAR FORM FUNCTION
+  const clearForm = () => {
+    setSearchTitle("");
+    setSearchRating("All Ratings");
+    setCurrentSearchMode("");
+    setCurrentPage(0);
+    setMovies([]);
+  }
 
    return (
       <div className="App">
@@ -186,16 +217,35 @@ const MoviesList = props => {
                   )
                })}
             </Row>
+            
 
          </Container><br />
-         {/* ch 23 */}
-         Showing page: {currentPage}
-         <Button
-            variant="link"
-            onClick={() => { setCurrentPage(currentPage + 1) }}
-         >
-            Get next {entriesPerPage} results
-         </Button>
+        <div>
+      <p>Showing page: {currentPage}</p>
+      <p>{moviesLeft > 0 ? `Movies left: ${moviesLeft}` : 'No more movies left!'}</p>
+
+      {moviesLeft > 0 ? (
+        <Button
+          variant="link"
+          onClick={() => setCurrentPage(currentPage + 1)}
+        >
+          Get next {entriesPerPage} results
+        </Button>
+      ) : null}
+    </div>
+         <Col md={4}>
+              <Button
+                variant="danger"
+                type="button"
+                onClick={clearForm}
+                className="mt-2"
+              >
+                Clear
+              </Button>
+            </Col>
+            
+          
+       
       </div>
    );
 }

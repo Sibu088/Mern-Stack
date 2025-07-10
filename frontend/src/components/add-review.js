@@ -71,7 +71,7 @@ const AddReview = props => {
          ) : (
             <Form>
                <Form.Group>
-                  <Form.Label>{editing ? "Edit" : "Create"} Review</Form.Label>
+                  <Form.Label>{editing ? "Edit" : "Create" } Review</Form.Label>
                   <Form.Control
                      type="text"
                      required

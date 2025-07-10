@@ -3,60 +3,65 @@ import React from 'react';
 import { Switch, Route, Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AddReview from "./components/add-review";
+import DeleteReview from './components/delete-review';
 import MoviesList from "./components/movies-list";
 import Movie from "./components/movie";
 import Login from "./components/login";
-import {Nav, Navbar} from 'react-bootstrap';
-
+import { Nav, Navbar } from 'react-bootstrap';
+import ContactPage from './components/contactpage';
+ 
 
 function App() {
   const [user, setUser] = React.useState(null);
 
   async function login(user = null) {
-    setUser(user)
+    setUser(user);
   }
+
   async function logout() {
-    setUser(null)
+    setUser(null);
   }
 
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand >Movie Reviews</Navbar.Brand>
+        <Navbar.Brand>Movie Reviews</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link>
-              <Link to={'/movies'}>Movies</Link>
-            </Nav.Link>
-            <Nav.Link>
-              {user ? (<button onClick={logout}>Logout User</button>) : (<Link to={"/login"}>Login</Link>)}
-            </Nav.Link>
+            <Nav.Link as={Link} to="/movies">Movies</Nav.Link>
+            <Nav.Link as={Link} to="/contactpage">Contact</Nav.Link>
+            {user ? (
+              <Nav.Link onClick={logout}>Logout</Nav.Link>
+            ) : (
+              <Nav.Link as={Link} to="/login">Login</Nav.Link>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Navbar>
 
       <Switch>
-        {/* what displays is the movies list  */}
-        <Route exact path={["/", "/movies"]} component={MoviesList}>
-        </Route>
-        {/* adding a review */}
+        {/* Movies List */}
+        <Route exact path={["/", "/movies"]} component={MoviesList} />
+
+        {/* Add a Review */}
         <Route path="/movies/:id/review" render={(props) =>
           <AddReview {...props} user={user} />
-        }>
-          {/* finding specific movie */}
-        </Route>
-        <Route path="/movies/:id/" render={(props) =>
+        } />
+
+        {/* Movie Detail */}
+        <Route path="/movies/:id" render={(props) =>
           <Movie {...props} user={user} />
-        }>
-          {/* login page */}
-        </Route>
+        } />
+
+        {/* Login */}
         <Route path="/login" render={(props) =>
           <Login {...props} login={login} />
-        }>
-        </Route>
-      </Switch>
+        } />
 
+        {/* Contact Page */}
+        <Route path="/contactpage" component={ContactPage} />
+      </Switch>
     </div>
   );
 }
